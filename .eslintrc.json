@@ -15,7 +15,7 @@
   },
   "plugins": ["@typescript-eslint"],
   "rules": {
-    "no-unused-vars": "warn",
+    "no-unused-vars": ["error", { "argsIgnorePattern": "req|res|next|val" }],
     "no-unused-expressions": "error",
     "prefer-const": "error",
     "no-console": "warn",
