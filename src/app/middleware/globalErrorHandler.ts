@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from 'express';
 
-export const globalErrorhandler = (
+export const globalErrorHandler = (
   err: any,
   req: Request,
   res: Response,
