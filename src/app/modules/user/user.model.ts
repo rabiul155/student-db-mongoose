@@ -1,13 +1,17 @@
 import mongoose from 'mongoose';
+import bcrypt from 'bcrypt';
 import { UserType } from './user.interface';
 
-const useSchema = new mongoose.Schema<UserType>(
+const userSchema = new mongoose.Schema<UserType>(
   {
     id: {
       type: String,
       required: true,
     },
-
+    password: {
+      type: String,
+      required: true,
+    },
     needPasswordChange: {
       type: Boolean,
       default: true,
@@ -31,6 +35,16 @@ const useSchema = new mongoose.Schema<UserType>(
   },
 );
 
-const User = mongoose.model('user', useSchema);
+userSchema.pre('save', async function (next) {
+  this.password = await bcrypt.hash(this.password, 12);
+  next();
+});
 
-export default User;
+userSchema.post('save', async function (doc, next) {
+  doc.password = '';
+  next();
+});
+
+const UserModel = mongoose.model('user', userSchema);
+
+export default UserModel;

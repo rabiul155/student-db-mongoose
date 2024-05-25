@@ -92,6 +92,16 @@ const studentSchema = new Schema<
   StudentModelType,
   StudentMethodsType
 >({
+  id: {
+    type: String,
+    required: true,
+  },
+  user: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    unique: true,
+    ref: 'User',
+  },
   name: {
     type: userNameSchema,
     required: [true, 'Name is required'],
@@ -135,11 +145,6 @@ const studentSchema = new Schema<
   profileImg: { type: String },
   results: {
     type: [Number],
-  },
-  isActive: {
-    type: String,
-    enum: ['active', 'blocked'],
-    default: 'active',
   },
 });
 
