@@ -6,8 +6,12 @@ const getAllStudentsFromDB = async () => {
 };
 
 const getSingleStudentFromDB = async (id: string) => {
-  const result = await StudentModel.findOne({ id });
-  return result;
+  const result = await StudentModel.findById(id);
+  if (!result) {
+    throw new Error('No data found');
+  } else {
+    return result;
+  }
 };
 const deleteStudent = async (id: string) => {
   const result = await StudentModel.findByIdAndDelete(id);
