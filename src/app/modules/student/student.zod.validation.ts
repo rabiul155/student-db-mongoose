@@ -42,6 +42,7 @@ export const studentValidationSchema = z.object({
     permanentAddress: z.string(),
     guardian: guardianValidationSchema,
     localGuardian: localGuardianValidationSchema,
+    admissionSemester: z.string(),
     profileImg: z.string(),
     results: z.array(z.number()),
     isActive: z.enum(['active', 'blocked']).default('active'),

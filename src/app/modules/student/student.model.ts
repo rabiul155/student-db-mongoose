@@ -8,6 +8,7 @@ import {
   StudentModelType,
   UserNameType,
 } from './student.interface';
+import AcademicSemester from '../academicSemester/academicSemester.model';
 
 const userNameSchema = new Schema<UserNameType>({
   firstName: {
@@ -115,6 +116,10 @@ const studentSchema = new Schema<
     required: true,
   },
   dateOfBirth: { type: Date },
+  admissionSemester: {
+    type: Schema.Types.ObjectId,
+    ref: AcademicSemester,
+  },
   email: {
     type: String,
     required: true,
