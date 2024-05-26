@@ -5,10 +5,17 @@ import { academicSemesterController } from './academicSemester.controller';
 
 const router = express.Router();
 
-router.post(
-  '/create-academic-semester',
-  validateRequest(academicSemesterValidationSchema),
-  academicSemesterController.createAcademicSemester,
-);
+router
+  .route('/')
+  .get(academicSemesterController.getAcademicSemester)
+  .post(
+    validateRequest(academicSemesterValidationSchema),
+    academicSemesterController.createAcademicSemester,
+  );
+
+router
+  .route('/:id')
+  .get(academicSemesterController.getSingleAcademicSemester)
+  .patch(academicSemesterController.updateAcademicSemester);
 
 export const academicSemesterRouter = router;

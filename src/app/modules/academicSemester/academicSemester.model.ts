@@ -38,6 +38,18 @@ const academicSemesterSchema = new mongoose.Schema<AcademicSemesterType>(
   },
 );
 
+academicSemesterSchema.pre('save', async function (next) {
+  const isAlreadyExist = await AcademicSemester.findOne({
+    year: this.year,
+    name: this.name,
+  });
+  if (isAlreadyExist) {
+    throw new Error('Semester already exist');
+  } else {
+    next();
+  }
+});
+
 const AcademicSemester = mongoose.model<AcademicSemesterType>(
   'academic',
   academicSemesterSchema,
