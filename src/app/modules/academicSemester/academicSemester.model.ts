@@ -6,32 +6,37 @@ import {
   academicSemesterName,
 } from './academicSemester.constant';
 
-const academicSemesterSchema = new mongoose.Schema<AcademicSemesterType>({
-  name: {
-    type: String,
-    enum: academicSemesterName,
-    required: true,
+const academicSemesterSchema = new mongoose.Schema<AcademicSemesterType>(
+  {
+    name: {
+      type: String,
+      enum: academicSemesterName,
+      required: true,
+    },
+    code: {
+      type: String,
+      enum: academicSemesterCode,
+      required: true,
+    },
+    year: {
+      type: String,
+      required: true,
+    },
+    startMonth: {
+      type: String,
+      enum: Months,
+      required: true,
+    },
+    endMonth: {
+      type: String,
+      enum: Months,
+      required: true,
+    },
   },
-  code: {
-    type: String,
-    enum: academicSemesterCode,
-    required: true,
+  {
+    timestamps: true,
   },
-  year: {
-    type: Date,
-    required: true,
-  },
-  startMonth: {
-    type: String,
-    enum: Months,
-    required: true,
-  },
-  endMonth: {
-    type: String,
-    enum: Months,
-    required: true,
-  },
-});
+);
 
 const AcademicSemester = mongoose.model<AcademicSemesterType>(
   'academic',

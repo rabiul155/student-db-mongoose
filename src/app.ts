@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable no-unused-vars */
 import cors from 'cors';
-import express, { Application, NextFunction, Request, Response } from 'express';
+import express, { Application } from 'express';
 import { StudentRoutes } from './app/modules/student/student.route';
 import { userRoute } from './app/modules/user/user.route';
 import { globalErrorHandler } from './app/middleware/globalErrorHandler';
