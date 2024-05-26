@@ -5,6 +5,7 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 import { StudentRoutes } from './app/modules/student/student.route';
 import { userRoute } from './app/modules/user/user.route';
 import { globalErrorHandler } from './app/middleware/globalErrorHandler';
+import { academicSemesterRouter } from './app/modules/academicSemester/academicSemester.route';
 
 const app: Application = express();
 
@@ -15,12 +16,11 @@ app.use(cors());
 // application routes uses
 app.use('/api/v1/students', StudentRoutes);
 app.use('/api/v1/users', userRoute);
+app.use('/api/v1/academic', academicSemesterRouter);
 
-const getAController = (req: Request, res: Response) => {
-  res.send('Hello from server');
-};
-
-app.get('/', getAController);
+app.get('/', (req, res) => {
+  res.send('Hello form server');
+});
 
 app.all('*', (req, res) => {
   res.send('route not found');
