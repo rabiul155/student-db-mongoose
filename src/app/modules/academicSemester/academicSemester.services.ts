@@ -5,6 +5,12 @@ type CourseCodeType = {
   [key: string]: string;
 };
 
+const academicCourseCode: CourseCodeType = {
+  Autumn: '01',
+  Summer: '02',
+  Fall: '03',
+};
+
 const getAcademicSemester = async () => {
   const result = await AcademicSemester.find();
   return result;
@@ -15,7 +21,10 @@ const getSingleAcademicSemester = async (id) => {
   return result;
 };
 
-const updateAcademicSemester = async (id, data) => {
+const updateAcademicSemester = async (id: string, data: any) => {
+  if (data.name && data.code && academicCourseCode[data.name] !== data.code) {
+    throw new Error('Invalid course code');
+  }
   const result = await AcademicSemester.findByIdAndUpdate(id, data, {
     new: true,
   });
@@ -23,11 +32,6 @@ const updateAcademicSemester = async (id, data) => {
 };
 
 const createAcademicSemester = async (data: AcademicSemesterType) => {
-  const academicCourseCode: CourseCodeType = {
-    Autumn: '01',
-    Summer: '02',
-    Fall: '03',
-  };
   if (academicCourseCode[data.name] !== data.code) {
     throw new Error('Invalid course code');
   }

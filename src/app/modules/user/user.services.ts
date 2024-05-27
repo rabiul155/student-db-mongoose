@@ -1,15 +1,26 @@
 import config from '../../config';
+import { AcademicSemesterType } from '../academicSemester/academicSemester.interface';
+import AcademicSemester from '../academicSemester/academicSemester.model';
 import { StudentType } from '../student/student.interface';
 import { StudentModel } from '../student/student.model';
 import { NewUserType } from './user.interface';
 import UserModel from './user.model';
+import { generateStudentId } from './user.utils';
 
 const createStudentIntoDB = async (password: string, student: StudentType) => {
   try {
     const user = {} as NewUserType;
     user.password = password || (config.default_password as string);
     user.role = 'student';
-    user.id = '2023100001';
+
+    const admissionSemester: AcademicSemesterType | null =
+      await AcademicSemester.findById(student.admissionSemester);
+
+    if (!admissionSemester) {
+      throw new Error('Academic semester not found');
+    } else {
+      user.id = await generateStudentId(admissionSemester);
+    }
 
     const newUser = await UserModel.create(user);
 
