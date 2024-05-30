@@ -51,7 +51,7 @@ academicSemesterSchema.pre('save', async function (next) {
 });
 
 const AcademicSemester = mongoose.model<AcademicSemesterType>(
-  'academic',
+  'academicSemester',
   academicSemesterSchema,
 );
 

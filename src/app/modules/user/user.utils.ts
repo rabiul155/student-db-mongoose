@@ -15,16 +15,26 @@ const findLastStudent = async () => {
       createdAt: -1,
     })
     .lean();
-  return lastStudent?.id.substring(6) || '0000';
+  return lastStudent?.id;
 };
 
 export const generateStudentId = async (
   academicSemester: AcademicSemesterType,
 ) => {
+  let lastStudentId = '0';
   const currentId = await findLastStudent();
-  console.log(currentId);
+  const currentYear = currentId?.substring(0, 4);
+  const currentCode = currentId?.substring(4, 6);
+  const id = currentId?.substring(6);
 
-  let incrementId = (Number(currentId) + 1).toString().padStart(4, '0');
+  if (
+    currentId &&
+    currentYear === academicSemester?.year &&
+    currentCode === academicSemester.code
+  ) {
+    lastStudentId = (Number(id) + 1).toString();
+  }
+  let incrementId = (Number(lastStudentId) + 1).toString().padStart(4, '0');
   incrementId = `${academicSemester?.year}${academicSemester.code}${incrementId}`;
 
   return incrementId;

@@ -16,7 +16,7 @@ const getAcademicSemester = async () => {
   return result;
 };
 
-const getSingleAcademicSemester = async (id) => {
+const getSingleAcademicSemester = async (id: string) => {
   const result = await AcademicSemester.findById(id);
   return result;
 };
