@@ -23,7 +23,7 @@ app.get('/', (req, res) => {
 });
 
 app.all('*', (req, res) => {
-  res.send('route not found');
+  res.status(500).send('route not found');
 });
 
 app.use(globalErrorHandler);
