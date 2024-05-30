@@ -9,6 +9,7 @@ import {
   UserNameType,
 } from './student.interface';
 import AcademicSemester from '../academicSemester/academicSemester.model';
+import AcademicDepartmentModel from '../academicDepartment/academicDepartment.model';
 
 const userNameSchema = new Schema<UserNameType>({
   firstName: {
@@ -116,10 +117,7 @@ const studentSchema = new Schema<
     required: true,
   },
   dateOfBirth: { type: Date },
-  admissionSemester: {
-    type: Schema.Types.ObjectId,
-    ref: AcademicSemester,
-  },
+
   email: {
     type: String,
     required: true,
@@ -147,10 +145,15 @@ const studentSchema = new Schema<
     type: localGuardianSchema,
     required: true,
   },
-  profileImg: { type: String },
-  results: {
-    type: [Number],
+  admissionSemester: {
+    type: Schema.Types.ObjectId,
+    ref: AcademicSemester,
   },
+  academicDepartment: {
+    type: Schema.Types.ObjectId,
+    ref: AcademicDepartmentModel,
+  },
+  profileImg: { type: String },
 });
 
 studentSchema.methods.isUserExist = async function (email: string) {

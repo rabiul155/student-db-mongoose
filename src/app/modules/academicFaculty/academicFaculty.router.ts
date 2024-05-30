@@ -13,7 +13,7 @@ router
   );
 
 router
-  .route('/id')
+  .route('/:id')
   .get(academicFacultyController.getSingleAcademicFaculty)
   .patch(academicFacultyController.updateAcademicFaculty);
 
