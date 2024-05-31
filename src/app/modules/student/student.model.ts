@@ -93,73 +93,91 @@ const studentSchema = new Schema<
   StudentType,
   StudentModelType,
   StudentMethodsType
->({
-  id: {
-    type: String,
-    required: true,
-  },
-  user: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    unique: true,
-    ref: 'User',
-  },
-  name: {
-    type: userNameSchema,
-    required: [true, 'Name is required'],
-  },
-  gender: {
-    type: String,
-    enum: {
-      values: ['male', 'female', 'others'],
-      message: '{VALUES} is not correct gender type',
+>(
+  {
+    id: {
+      type: String,
+      required: true,
     },
-    required: true,
-  },
-  dateOfBirth: { type: Date },
-
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    validate: {
-      validator: function (value: string) {
-        return validator.isEmail(value);
+    user: {
+      type: Schema.Types.ObjectId,
+      required: true,
+      unique: true,
+      ref: 'User',
+    },
+    name: {
+      type: userNameSchema,
+      required: [true, 'Name is required'],
+    },
+    gender: {
+      type: String,
+      enum: {
+        values: ['male', 'female', 'others'],
+        message: '{VALUES} is not correct gender type',
       },
-      message: 'Email is not valid',
+      required: true,
+    },
+    dateOfBirth: { type: Date },
+
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      validate: {
+        validator: function (value: string) {
+          return validator.isEmail(value);
+        },
+        message: 'Email is not valid',
+      },
+    },
+    contactNo: { type: String, required: true },
+    emergencyContactNo: { type: String, required: true },
+    bloodGroup: {
+      type: String,
+      enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+    },
+    presentAddress: { type: String, required: true },
+    permanentAddress: { type: String, required: true },
+    guardian: {
+      type: guardianSchema,
+      required: true,
+    },
+    localGuardian: {
+      type: localGuardianSchema,
+      required: true,
+    },
+    admissionSemester: {
+      type: Schema.Types.ObjectId,
+      ref: AcademicSemester,
+    },
+    academicDepartment: {
+      type: Schema.Types.ObjectId,
+      ref: AcademicDepartmentModel,
+    },
+    profileImg: { type: String },
+    isDeleted: {
+      type: Boolean,
+      default: false,
     },
   },
-  contactNo: { type: String, required: true },
-  emergencyContactNo: { type: String, required: true },
-  bloodGroup: {
-    type: String,
-    enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'],
+  {
+    timestamps: true,
   },
-  presentAddress: { type: String, required: true },
-  permanentAddress: { type: String, required: true },
-  guardian: {
-    type: guardianSchema,
-    required: true,
-  },
-  localGuardian: {
-    type: localGuardianSchema,
-    required: true,
-  },
-  admissionSemester: {
-    type: Schema.Types.ObjectId,
-    ref: AcademicSemester,
-  },
-  academicDepartment: {
-    type: Schema.Types.ObjectId,
-    ref: AcademicDepartmentModel,
-  },
-  profileImg: { type: String },
-});
+);
 
 studentSchema.methods.isUserExist = async function (email: string) {
   const user = await StudentModel.findOne({ email });
   return user ? true : false;
 };
+
+studentSchema.pre('find', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+studentSchema.pre('findOne', function (next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
 
 export const StudentModel = model<StudentType, StudentModelType>(
   'student',

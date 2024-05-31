@@ -1,14 +1,19 @@
 import { RequestHandler } from 'express';
 import { StudentServices } from './student.service';
 import { catchAsync } from '../../utils/catchAsync';
+import { AppError } from '../../utils/AppError';
 
 const getAllStudents: RequestHandler = catchAsync(async (req, res, next) => {
-  const result = await StudentServices.getAllStudentsFromDB();
+  const results = await StudentServices.getAllStudentsFromDB();
+
+  if (!results.length) {
+    throw new AppError(404, 'Student not found');
+  }
 
   res.status(200).json({
     success: true,
     message: 'Students are retrieved successfully',
-    data: result,
+    data: results,
   });
 });
 
@@ -36,8 +41,22 @@ const deleteStudent: RequestHandler = catchAsync(async (req, res, next) => {
   });
 });
 
+const updateStudent: RequestHandler = catchAsync(async (req, res, next) => {
+  const { studentId } = req.params;
+  const { student } = req.body;
+
+  const result = await StudentServices.updateStudent(studentId, student);
+
+  res.status(200).json({
+    success: true,
+    message: 'Student is updated successfully',
+    data: result,
+  });
+});
+
 export const StudentControllers = {
   getAllStudents,
   getSingleStudent,
   deleteStudent,
+  updateStudent,
 };
