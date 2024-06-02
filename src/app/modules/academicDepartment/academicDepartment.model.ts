@@ -15,16 +15,16 @@ const academicDepartmentSchema = new mongoose.Schema<AcademicDepartmentType>({
   },
 });
 
-academicDepartmentSchema.pre('save', async function (next) {
-  const isDepExist = await AcademicDepartmentModel.findOne({
-    name: this.name,
-  });
-  if (isDepExist) {
-    throw new AppError(404, 'Department does not exist');
-  }
+// academicDepartmentSchema.pre('save', async function (next) {
+//   const isDepExist = await AcademicDepartmentModel.findOne({
+//     name: this.name,
+//   });
+//   if (isDepExist) {
+//     throw new AppError(404, 'Department already exist');
+//   }
 
-  next();
-});
+//   next();
+// });
 
 academicDepartmentSchema.pre('findOneAndUpdate', async function (next) {
   const query = this.getQuery();
