@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 import { AcademicDepartmentType } from './academicDepartment.interface';
 import AcademicFacultyModel from '../academicFaculty/academicFaculty.model';
-import { AppError } from '../../utils/AppError';
+import { AppError } from '../../errors/AppError';
 
 const academicDepartmentSchema = new mongoose.Schema<AcademicDepartmentType>({
   name: {

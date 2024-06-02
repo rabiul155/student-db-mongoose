@@ -32,7 +32,7 @@ const updateAcademicSemester = async (id: string, data: any) => {
 };
 
 const createAcademicSemester = async (data: AcademicSemesterType) => {
-  if (academicCourseCode[data.name] !== data.code) {
+  if (data.name && data.code && academicCourseCode[data.name] !== data.code) {
     throw new Error('Invalid course code');
   }
   const result = await AcademicSemester.create(data);

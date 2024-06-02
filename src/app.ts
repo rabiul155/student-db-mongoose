@@ -2,7 +2,7 @@ import cors from 'cors';
 import express, { Application } from 'express';
 import { StudentRoutes } from './app/modules/student/student.route';
 import { userRoute } from './app/modules/user/user.route';
-import { globalErrorHandler } from './app/middleware/globalErrorHandler';
+import { globalErrorHandler } from './app/errors/globalErrorHandler';
 import { academicSemesterRouter } from './app/modules/academicSemester/academicSemester.route';
 import { academicFacultyRouter } from './app/modules/academicFaculty/academicFaculty.router';
 import { academicDepartmentRouter } from './app/modules/academicDepartment/academicDepartment.router';

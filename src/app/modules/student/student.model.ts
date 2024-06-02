@@ -121,7 +121,7 @@ const studentSchema = new Schema<
 
     email: {
       type: String,
-      required: true,
+      required: [true, 'Email is required'],
       unique: true,
       validate: {
         validator: function (value: string) {
