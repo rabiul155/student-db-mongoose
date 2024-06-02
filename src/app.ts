@@ -24,6 +24,10 @@ app.get('/', (req, res) => {
   res.send('Hello form server');
 });
 
+app.get('/test', (req, res) => {
+  Promise.reject('I am rejected');
+});
+
 app.all('*', (req, res) => {
   res.status(500).send('route not found');
 });

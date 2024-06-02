@@ -8,6 +8,7 @@ import {
   mongooseValidationError,
   duplicateFieldValueError,
 } from './errorHandler';
+import { AppError } from './AppError';
 
 //default values
 let statusCode = 500;
@@ -45,6 +46,15 @@ export const globalErrorHandler: ErrorRequestHandler = (
     message = simplifiedError.message;
     errorSource = simplifiedError.errorSource;
     statusCode = simplifiedError.statusCode;
+  } else if (err instanceof AppError) {
+    message = err.message;
+    errorSource = [
+      {
+        path: '',
+        message: err.message,
+      },
+    ];
+    statusCode = err.statusCode;
   }
 
   return res.status(statusCode).json({
