@@ -3,46 +3,61 @@ import { StudentModel } from './student.model';
 import { AppError } from '../../errors/AppError';
 import UserModel from '../user/user.model';
 import { StudentType } from './student.interface';
+import { QueryBuilders } from '../../utils/QueryBuilders';
 
 const getAllStudentsFromDB = async (queryStr: Record<string, unknown>) => {
-  const queryObj = { ...queryStr };
+  // const queryObj = { ...queryStr };
 
-  let Query = StudentModel.find();
+  // let Query = StudentModel.find();
 
   //use for searching
-  const search = queryStr.search || '';
-  const searchTerm = ['email', 'name.firstName', 'presentAddress'];
-  Query = Query.find({
-    $or: searchTerm.map((field) => {
-      return { [field]: { $regex: search, $options: 'i' } };
-    }),
-  });
+  // const search = queryStr.search || '';
+  // const searchTerm = ['email', 'name.firstName', 'presentAddress'];
+  // Query = Query.find({
+  //   $or: searchTerm.map((field) => {
+  //     return { [field]: { $regex: search, $options: 'i' } };
+  //   }),
+  // });
 
   // filtering
-  const excludeFields = ['search', 'page', 'sort', 'limit', 'fields'];
-  excludeFields.forEach((field) => delete queryObj[field]);
-  Query = Query.find(queryObj);
+  // const excludeFields = ['search', 'page', 'sort', 'limit', 'fields'];
+  // excludeFields.forEach((field) => delete queryObj[field]);
+  // Query = Query.find(queryObj);
 
   // sorting
-  const sort = queryStr?.sort ? (queryStr?.sort as string) : '-createdAt';
-  Query = Query.sort(sort);
+  // const sort = queryStr?.sort ? (queryStr?.sort as string) : '-createdAt';
+  // Query = Query.sort(sort);
 
   // paginate
-  const page = Number(queryStr.page as string) || 1;
-  const limit = Number(queryStr.limit as string) || 10;
-  const skip = (page - 1) * limit;
-  Query = Query.skip(skip).limit(limit);
+  // const page = Number(queryStr.page as string) || 1;
+  // const limit = Number(queryStr.limit as string) || 10;
+  // const skip = (page - 1) * limit;
+  // Query = Query.skip(skip).limit(limit);
 
   //select
   // const fields = (queryStr.fields as string).split(',').join(' ') || '-__v';
   // Query = Query.select(fields);
 
-  const results = await Query.populate('admissionSemester').populate({
-    path: 'academicDepartment',
-    populate: {
-      path: 'academicFaculty',
-    },
-  });
+  const searchTerm = ['email', 'name.firstName', 'presentAddress'];
+
+  const queryBuilders = new QueryBuilders(
+    StudentModel.find()
+      .populate('admissionSemester')
+      .populate({
+        path: 'academicDepartment',
+        populate: {
+          path: 'academicFaculty',
+        },
+      }),
+    queryStr,
+  )
+    .filter()
+    .search(searchTerm)
+    .short()
+    .select()
+    .paginate();
+
+  const results = await queryBuilders.Query;
 
   if (!results.length) {
     throw new AppError(400, 'Student not found');
