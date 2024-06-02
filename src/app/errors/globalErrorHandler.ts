@@ -36,10 +36,10 @@ export const globalErrorHandler: ErrorRequestHandler = (
   // }
 
   return res.status(statusCode).json({
-    // success: false,
-    // message,
+    success: false,
+    message: err.message || message,
     err,
-    // errorSource,
-    // stack: config.NODE_ENV === 'development' ? err?.stack : null,
+    errorSource,
+    stack: config.NODE_ENV === 'development' ? err?.stack : null,
   });
 };

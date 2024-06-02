@@ -17,19 +17,17 @@ const createStudentIntoDB = async (password: string, student: StudentType) => {
   const admissionSemester: AcademicSemesterType | null =
     await AcademicSemester.findById(student.admissionSemester);
 
-  console.log(admissionSemester);
-
   if (!admissionSemester) {
     throw new AppError(404, 'admission semester not found');
-  } else {
-    //generate user id
-    user.id = await generateStudentId(admissionSemester);
   }
 
   const session = await mongoose.startSession();
 
   try {
     session.startTransaction();
+
+    //generate user id
+    user.id = await generateStudentId(admissionSemester);
 
     // create user transaction 1
     const newUser = await UserModel.create([user], {
@@ -56,7 +54,7 @@ const createStudentIntoDB = async (password: string, student: StudentType) => {
     await session.abortTransaction();
     await session.endSession();
 
-    throw new Error(error);
+    throw error;
   }
 };
 
