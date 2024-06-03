@@ -5,11 +5,13 @@ import UserModel from '../user/user.model';
 import { AppError } from '../../errors/AppError';
 
 const getAllFacultyDB = async () => {
-  const results = await FacultyModel.find();
+  const results = await FacultyModel.find().populate('academicDepartment');
   return results;
 };
 const getSingleFacultyDB = async (id: string) => {
-  const results = await FacultyModel.findOne({ id });
+  const results = await FacultyModel.findOne({ id }).populate(
+    'academicDepartment',
+  );
   return results;
 };
 const updateFacultyDB = async (id: string, payload: Partial<FacultyType>) => {
