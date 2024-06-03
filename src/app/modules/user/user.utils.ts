@@ -61,3 +61,25 @@ export const generateAdminId = async () => {
   lastId = `A-${lastId}`;
   return lastId;
 };
+
+export const generateFacultyId = async () => {
+  const lastFaculty = await UserModel.findOne(
+    {
+      role: 'faculty',
+    },
+    {
+      id: 1,
+    },
+  )
+    .sort({
+      createdAt: -1,
+    })
+    .lean();
+
+  let lastId = lastFaculty?.id || 'F-0000';
+
+  lastId = (Number(lastId.split('-')[1]) + 1).toString().padStart(4, '0');
+
+  lastId = `F-${lastId}`;
+  return lastId;
+};

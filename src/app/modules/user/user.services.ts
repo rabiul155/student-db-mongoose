@@ -6,10 +6,16 @@ import { StudentType } from '../student/student.interface';
 import { StudentModel } from '../student/student.model';
 import { NewUserType } from './user.interface';
 import UserModel from './user.model';
-import { generateAdminId, generateStudentId } from './user.utils';
+import {
+  generateAdminId,
+  generateFacultyId,
+  generateStudentId,
+} from './user.utils';
 import { AppError } from '../../errors/AppError';
 import { AdminType } from '../admin/admin.interface';
 import { AdminModel } from '../admin/admin.model';
+import { FacultyModel } from '../faculty/faculty.model';
+import { FacultyType } from '../faculty/faculty.interface';
 
 const createStudentIntoDB = async (password: string, student: StudentType) => {
   const user = {} as NewUserType;
@@ -98,8 +104,47 @@ const createAdminIntoDB = async (password: string, admin: AdminType) => {
     throw err;
   }
 };
+const createFacultyIntoDB = async (password: string, faculty: FacultyType) => {
+  const user = {} as NewUserType;
+  user.password = password || (config.default_password as string);
+  user.role = 'faculty';
+  user.id = await generateFacultyId();
+
+  const session = await mongoose.startSession();
+
+  try {
+    session.startTransaction();
+
+    const newUser = await UserModel.create([user], {
+      session,
+    });
+
+    if (!newUser.length) {
+      throw new AppError(400, 'Failed to create faculty');
+    }
+    faculty.id = newUser[0].id;
+    faculty.user = newUser[0]._id;
+    const newFaculty = await FacultyModel.create([faculty], {
+      session,
+    });
+
+    if (!newFaculty.length) {
+      throw new AppError(400, 'Failed to create faculty');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return newFaculty;
+  } catch (err) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw err;
+  }
+};
 
 export const userServices = {
   createStudentIntoDB,
   createAdminIntoDB,
+  createFacultyIntoDB,
 };
