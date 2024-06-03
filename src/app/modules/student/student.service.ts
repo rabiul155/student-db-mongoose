@@ -3,7 +3,7 @@ import { StudentModel } from './student.model';
 import { AppError } from '../../errors/AppError';
 import UserModel from '../user/user.model';
 import { StudentType } from './student.interface';
-import { QueryBuilders } from '../../utils/QueryBuilders';
+import { QueryBuilders } from '../../utils/queryBuilders';
 
 const getAllStudentsFromDB = async (queryStr: Record<string, unknown>) => {
   // const queryObj = { ...queryStr };

@@ -39,3 +39,25 @@ export const generateStudentId = async (
 
   return incrementId;
 };
+
+export const generateAdminId = async () => {
+  const lastAdmin = await UserModel.findOne(
+    {
+      role: 'admin',
+    },
+    {
+      id: 1,
+    },
+  )
+    .sort({
+      createdAt: -1,
+    })
+    .lean();
+
+  let lastId = lastAdmin?.id || 'A-0000';
+
+  lastId = (Number(lastId.split('-')[1]) + 1).toString().padStart(4, '0');
+
+  lastId = `A-${lastId}`;
+  return lastId;
+};
