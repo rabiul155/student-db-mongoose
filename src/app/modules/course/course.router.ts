@@ -1,7 +1,10 @@
 import express from 'express';
 import { courseController } from './course.controller';
 import validateRequest from '../../utils/validateRequest';
-import { courseValidationSchema } from './course.validation';
+import {
+  courseValidationSchema,
+  updateCourseValidationSchema,
+} from './course.validation';
 
 const router = express.Router();
 
@@ -13,6 +16,10 @@ router
 router
   .route('/:id')
   .get(courseController.getSingleCourse)
-  .delete(courseController.deleteCourse);
+  .delete(courseController.deleteCourse)
+  .patch(
+    validateRequest(updateCourseValidationSchema),
+    courseController.updateCourse,
+  );
 
 export const courseRouter = router;

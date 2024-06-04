@@ -10,6 +10,7 @@ const preRequisiteCourseSchema = new mongoose.Schema<PreRequisiteCourse>(
     isDeleted: {
       type: Boolean,
       default: false,
+      select: false,
     },
   },
   { _id: false },
@@ -49,5 +50,12 @@ const courseSchema = new mongoose.Schema<CourseType>(
     timestamps: true,
   },
 );
+
+courseSchema.pre('find', async function (next) {
+  this.find({ isDeleted: { $ne: true } });
+});
+courseSchema.pre('findOne', async function (next) {
+  this.find({ isDeleted: { $ne: true } });
+});
 
 export const CourseModel = mongoose.model<CourseType>('course', courseSchema);

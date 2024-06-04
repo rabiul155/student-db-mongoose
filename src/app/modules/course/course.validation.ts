@@ -13,3 +13,5 @@ export const courseValidationSchema = z.object({
   credits: z.number({ required_error: 'Credits is required' }),
   preRequisiteCourse: preRequisiteCourseValidation.optional(),
 });
+
+export const updateCourseValidationSchema = courseValidationSchema.partial();

@@ -30,7 +30,7 @@ export class QueryBuilders<T> {
 
   short() {
     const sort = this.queryStr?.sort
-      ? (this.queryStr?.sort as string)
+      ? (this.queryStr?.sort as string).split(',').join(' ')
       : '-createdAt';
     this.Query = this.Query.sort(sort);
     return this;
