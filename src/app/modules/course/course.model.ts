@@ -1,16 +1,19 @@
 import mongoose from 'mongoose';
 import { CourseType, PreRequisiteCourse } from './course.interface';
 
-const preRequisiteCourseSchema = new mongoose.Schema<PreRequisiteCourse>({
-  course: {
-    type: mongoose.Schema.Types.ObjectId,
-    unique: true,
+const preRequisiteCourseSchema = new mongoose.Schema<PreRequisiteCourse>(
+  {
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'CourseModel',
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
-  isDeleted: {
-    type: Boolean,
-    default: false,
-  },
-});
+  { _id: false },
+);
 
 const courseSchema = new mongoose.Schema<CourseType>(
   {
@@ -39,6 +42,7 @@ const courseSchema = new mongoose.Schema<CourseType>(
     isDeleted: {
       type: Boolean,
       default: false,
+      select: false,
     },
   },
   {

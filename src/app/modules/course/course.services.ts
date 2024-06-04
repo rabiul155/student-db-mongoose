@@ -6,12 +6,16 @@ const createCourseIntoDB = async (payload: CourseType) => {
   const result = await CourseModel.create(payload);
   return result;
 };
-
+//
 const getAllCourseFormDB = async (queryStr: Record<string, unknown>) => {
-  const courseQuery = new QueryBuilders(CourseModel.find(), queryStr)
+  const courseQuery = new QueryBuilders(
+    CourseModel.find().populate('preRequisiteCourse.course'),
+    queryStr,
+  )
     .filter()
     .search(['title'])
     .short()
+    .select()
     .paginate();
   const results = await courseQuery.Query;
   return results;

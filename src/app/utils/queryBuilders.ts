@@ -45,9 +45,11 @@ export class QueryBuilders<T> {
   }
 
   select() {
-    const fields = this.queryStr?.fields
-      ? (this.queryStr.fields as string).split(',').join(' ')
-      : '-__v';
+    let fields = '-__v';
+    if (this.queryStr?.fields) {
+      const getFields = (this.queryStr.fields as string).split(',').join(' ');
+      fields = fields.concat(' ', getFields);
+    }
     this.Query = this.Query.select(fields);
     return this;
   }

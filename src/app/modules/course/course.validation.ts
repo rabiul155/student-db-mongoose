@@ -11,5 +11,5 @@ export const courseValidationSchema = z.object({
   prefix: z.string({ required_error: 'Prefix is required' }),
   code: z.number({ required_error: 'Course code is required' }),
   credits: z.number({ required_error: 'Credits is required' }),
-  preRequisiteCourse: preRequisiteCourseValidation,
+  preRequisiteCourse: preRequisiteCourseValidation.optional(),
 });
