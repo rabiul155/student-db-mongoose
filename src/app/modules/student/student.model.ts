@@ -170,10 +170,11 @@ studentSchema.methods.isUserExist = async function (email: string) {
   return user ? true : false;
 };
 
-studentSchema.pre('find', function (next) {
+studentSchema.pre('find', async function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
 });
+
 studentSchema.pre('findOne', function (next) {
   this.find({ isDeleted: { $ne: true } });
   next();
