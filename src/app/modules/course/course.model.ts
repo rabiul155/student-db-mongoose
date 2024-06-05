@@ -1,7 +1,12 @@
 import mongoose from 'mongoose';
-import { CourseType, PreRequisiteCourse } from './course.interface';
+import {
+  CourseFacultyType,
+  CourseType,
+  PreRequisiteCourses,
+} from './course.interface';
+import { FacultyModel } from '../faculty/faculty.model';
 
-const preRequisiteCourseSchema = new mongoose.Schema<PreRequisiteCourse>(
+const preRequisiteCoursesSchema = new mongoose.Schema<PreRequisiteCourses>(
   {
     course: {
       type: mongoose.Schema.Types.ObjectId,
@@ -10,7 +15,6 @@ const preRequisiteCourseSchema = new mongoose.Schema<PreRequisiteCourse>(
     isDeleted: {
       type: Boolean,
       default: false,
-      select: false,
     },
   },
   { _id: false },
@@ -39,7 +43,7 @@ const courseSchema = new mongoose.Schema<CourseType>(
       required: true,
       trim: true,
     },
-    preRequisiteCourse: [preRequisiteCourseSchema],
+    preRequisiteCourses: [preRequisiteCoursesSchema],
     isDeleted: {
       type: Boolean,
       default: false,
@@ -59,3 +63,22 @@ courseSchema.pre('findOne', async function (next) {
 });
 
 export const CourseModel = mongoose.model<CourseType>('course', courseSchema);
+
+const courseFacultySchema = new mongoose.Schema<CourseFacultyType>({
+  course: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: CourseModel,
+    unique: true,
+  },
+  faculties: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: FacultyModel,
+    },
+  ],
+});
+
+export const CourseFacultyModel = mongoose.model<CourseFacultyType>(
+  'courseFaculty',
+  courseFacultySchema,
+);

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const preRequisiteCourseValidation = z.array(
+const preRequisiteCoursesValidation = z.array(
   z.object({
     course: z.string({ required_error: 'Course id is required' }),
   }),
@@ -11,7 +11,11 @@ export const courseValidationSchema = z.object({
   prefix: z.string({ required_error: 'Prefix is required' }),
   code: z.number({ required_error: 'Course code is required' }),
   credits: z.number({ required_error: 'Credits is required' }),
-  preRequisiteCourse: preRequisiteCourseValidation.optional(),
+  preRequisiteCourses: preRequisiteCoursesValidation.optional(),
 });
 
 export const updateCourseValidationSchema = courseValidationSchema.partial();
+
+export const facultiesWithCourseValidationSchema = z.object({
+  faculties: z.array(z.string()),
+});
