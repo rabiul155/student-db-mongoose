@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const SemesterRegistrationValidationSchema = z.object({
+export const semesterRegistrationValidationSchema = z.object({
   academicSemester: z.string({ required_error: 'Academic semester required' }),
   status: z.enum(['UPCOMING', 'ONGOING', 'ENDED']),
   startDate: z.string(),
@@ -8,3 +8,6 @@ export const SemesterRegistrationValidationSchema = z.object({
   minCredit: z.number(),
   maxCredit: z.number(),
 });
+
+export const updateSemesterRegistrationValidationSchema =
+  semesterRegistrationValidationSchema.partial();
