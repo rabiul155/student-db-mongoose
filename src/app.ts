@@ -9,6 +9,7 @@ import { academicDepartmentRouter } from './app/modules/academicDepartment/acade
 import { adminRouter } from './app/modules/admin/admin.router';
 import { facultyRouter } from './app/modules/faculty/faculty.router';
 import { courseRouter } from './app/modules/course/course.router';
+import { semesterRegistrationRouter } from './app/modules/semesterRegistration/semesterRegistration.router';
 
 const app: Application = express();
 
@@ -25,6 +26,7 @@ app.use('/api/v1/academicDepartment', academicDepartmentRouter);
 app.use('/api/v1/admin', adminRouter);
 app.use('/api/v1/faculty', facultyRouter);
 app.use('/api/v1/courses', courseRouter);
+app.use('/api/v1/semester', semesterRegistrationRouter);
 
 app.get('/', (req, res) => {
   res.send('Hello form server');
