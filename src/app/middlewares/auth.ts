@@ -8,6 +8,7 @@ const auth = () => {
     if (!token) {
       throw new AppError(401, 'Unauthorized');
     }
+
     next();
   });
 };
