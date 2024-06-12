@@ -1,9 +1,10 @@
 import express from 'express';
 import { facultyController } from './faculty.controller';
+import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
-router.get('/', facultyController.getAllFaculty);
+router.get('/', auth(), facultyController.getAllFaculty);
 router
   .route('/:id')
   .get(facultyController.getSingleFaculty)
