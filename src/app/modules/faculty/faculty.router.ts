@@ -4,10 +4,14 @@ import auth from '../../middlewares/auth';
 
 const router = express.Router();
 
-router.get('/', auth(), facultyController.getAllFaculty);
+router.get(
+  '/',
+  auth(['student', 'admin', 'faculty']),
+  facultyController.getAllFaculty,
+);
 router
   .route('/:id')
-  .get(facultyController.getSingleFaculty)
+  .get(auth([]), facultyController.getSingleFaculty)
   .patch(facultyController.updateFaculty)
   .delete(facultyController.deleteFaculty);
 
